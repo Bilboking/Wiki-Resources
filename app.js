@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 const app = express();
 
-//** dotenv DB connect */
+//** dotenv and mongoose mongoDB connect */
 require('dotenv').config();
 mongoose.connect(process.env.DB_URI,  {
     dbName: process.env.DB_NAME,
@@ -20,6 +20,9 @@ mongoose.connect(process.env.DB_URI,  {
 //** EJS */
 app.use(expressLayouts);
 app.set('view engine', 'ejs')
+
+//** Bodyparser */
+app.use(express.urlencoded({ extended: false }));
 
 //** allow stylesheet access to ejs files */
 app.use(express.static(__dirname + '/public'));
