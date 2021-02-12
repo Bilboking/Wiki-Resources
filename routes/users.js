@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
 
 //** User model */
 const User = require('../models/User')
@@ -51,10 +52,26 @@ router.post('/register', (req, res) => {
                     email,
                     password,
                     password2
+                    });
+                } else {
+                    const newUser = new User({
+                        email,
+                        password
+                    });
+
+                    console.log(newUser)
+                        res.send('NEW USER!')
+                    //** Hash password */
+                    bcrypt.genSalt(10, (err, salt) => 
+                        bcrypt.hash(newUser.password, salt, (err, hash) => {
+                            if(err) throw err;
+
+                            newUser.password = hash;
+                        }))
+                    }
                 });
             }
-        })
-    }
+    
 });
 //** Main page */
 router.get('/', (req, res) => res.render('welcome'));
