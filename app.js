@@ -24,10 +24,34 @@ mongoose.connect(process.env.DB_URI,  {
 app.use(expressLayouts);
 app.set('view engine', 'ejs')
 
-//** Bodyparser */
-app.use(express.urlencoded({ extended: false }));
+//** Express Bodyparser */
+app.use(express.urlencoded({ extended: true }));
 
-//** allow stylesheet access to ejs files */
+//** Express session */
+app.use(
+  session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true
+  })
+);
+
+//** Passport middleware */
+app.use(passport.initialize());
+app.use(passport.session());
+
+//** Connect Flash */
+app.use(flash());
+
+//** Global variables for Flash messages */
+app.use(function(req, res, next) {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error');
+  next();
+});
+
+//** Allow stylesheet access to ejs files */
 app.use(express.static(__dirname + '/public'));
 
 //** routes */
