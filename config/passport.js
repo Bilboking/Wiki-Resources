@@ -1,17 +1,13 @@
-//** Import passport and bcrypt so DB can authenticate */
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
 
-//** Load the User model */
+// Load User model
 const User = require('../models/User');
 
-
-//** Export all the passport logic */
 module.exports = function(passport) {
   passport.use(
     new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
-
-      //** Match User email */
+      // Match user
       User.findOne({
         email: email
       }).then(user => {
@@ -19,7 +15,7 @@ module.exports = function(passport) {
           return done(null, false, { message: 'That email is not registered' });
         }
 
-        //** Match User password */
+        // Match password
         bcrypt.compare(password, user.password, (err, isMatch) => {
           if (err) throw err;
           if (isMatch) {
@@ -31,7 +27,7 @@ module.exports = function(passport) {
       });
     })
   );
-//** serialize in order for cookies to identify or support login session  */
+
   passport.serializeUser(function(user, done) {
     done(null, user.id);
   });

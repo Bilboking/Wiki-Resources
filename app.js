@@ -7,6 +7,9 @@ const session = require('express-session');
 
 const app = express();
 
+//** Passport config */
+require('./config/passport')(passport);
+
 //** dotenv and mongoose mongoDB connect */
 require('dotenv').config();
 mongoose.connect(process.env.DB_URI,  {
@@ -36,7 +39,7 @@ app.use(
   })
 );
 
-//** Passport middleware */
+//** Passport middleware initializes local strategy */
 app.use(passport.initialize());
 app.use(passport.session());
 
