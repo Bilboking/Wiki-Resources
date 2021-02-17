@@ -61,6 +61,8 @@ app.use(express.static(__dirname + '/public'));
 const articleRouter = require('./routes/articles');
 app.use('/articles', articleRouter)
 
+app.use('/create', require('./routes/articles'));
+
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
 

@@ -10,6 +10,11 @@ router.get('/all-articles', (req, res) => {
     res.render('all-articles')
 })
 
+//** create articles */
+router.get('/create', (req, res) => {
+    res.render('create')
+})
+
 //** Dashboard (once signed in) */
 router.get('/dashboard', ensureAuthenticated, (req, res) => 
     res.render('dashboard', {
