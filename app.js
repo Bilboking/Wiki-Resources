@@ -6,7 +6,7 @@ const flash = require('connect-flash');
 const session = require('express-session');
 
 const app = express();
-
+ 
 //** Passport config */
 require('./config/passport')(passport);
 
@@ -58,8 +58,13 @@ app.use(function(req, res, next) {
 app.use(express.static(__dirname + '/public'));
 
 //** routes */
+const articleRouter = require('./routes/articles');
+app.use('/articles', articleRouter)
+
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
+
+
 
 const PORT = process.env.PORT || 5000;
 
